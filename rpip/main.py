@@ -39,7 +39,14 @@ def resolve_package(package_spec: str) -> Tuple[str, str, Optional[str]]:
 
     try:
         result = subprocess.run(cmd, capture_output=True, text=True, check=True)
-        report = json.loads(result.stdout)
+        # Extract only the JSON part from stdout
+        stdout_str = result.stdout
+        json_start = stdout_str.find('{')
+        json_end = stdout_str.rfind('}')
+        if json_start == -1 or json_end == -1:
+            raise RuntimeError("Could not find JSON report in pip output.")
+        json_report_str = stdout_str[json_start : json_end + 1]
+        report = json.loads(json_report_str)
     except subprocess.CalledProcessError as e:
         print(f"❌ Error during pip resolution (Code {e.returncode}):\n{e.stderr}", file=sys.stderr)
         raise RuntimeError(f"Could not resolve package '{package_spec}'.")

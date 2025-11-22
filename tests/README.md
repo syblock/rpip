@@ -9,6 +9,7 @@ tests/
 ├── __init__.py                 # Test package initialization
 ├── test_main.py               # Unit tests for main module functions
 ├── test_integration.py        # Integration tests for complete workflows
+├── test_download.py           # Download tests for actual package downloads
 ├── fixtures/                  # Test fixtures and sample data
 │   ├── requirements.txt       # Sample requirements file
 │   ├── requirements-nested.txt # Requirements with nested -r
@@ -49,6 +50,9 @@ pytest tests/test_main.py
 
 # Integration tests only
 pytest tests/test_integration.py
+
+# Download tests only
+pytest tests/test_download.py
 ```
 
 ### Run specific test classes or methods
@@ -79,6 +83,13 @@ Tests complete workflows with multiple components:
 - **TestInstallSinglePackage**: Tests single package installation flow
 - **TestMainFunction**: Tests main CLI function
 - **TestRequirementsFileIntegration**: Tests requirements file processing
+
+### Download Tests (`test_download.py`)
+
+Tests the actual download of packages from PyPI:
+
+- These tests are disabled by default.
+- Run them with `pytest -m download`.
 
 ## Test Fixtures
 

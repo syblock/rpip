@@ -2,9 +2,12 @@
 
 All notable changes to rpip will be documented in this file.
 
-## [Unreleased]
+## [0.1.1]
 
 ### Added
+- **Download Tests** - Added a new category of tests that perform actual package downloads from PyPI.
+  - These tests are disabled by default to keep the test suite fast and network-independent.
+  - Run them with `pytest -m download`.
 - **Editable install support** - Full support for `-e` and `--editable` packages
   - Handles local paths (`-e .`, `-e /path/to/package`)
   - Handles git URLs (`-e git+https://github.com/user/repo.git#egg=package`)
@@ -32,6 +35,7 @@ All notable changes to rpip will be documented in this file.
   - Nested requirements files inherit and combine pip options
 
 ### Fixed
+- **`resolve_package` JSON parsing** - Fixed a bug where `resolve_package` would fail if pip printed non-JSON output before the JSON report.
 - Requirements file parser now correctly includes editable installs
 - Comment stripping no longer removes URL fragments
 - Pip options from requirements files are now properly applied to installations

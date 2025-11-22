@@ -162,9 +162,10 @@ make test-coverage
 
 ### Test Coverage
 
-The project includes comprehensive unit and integration tests (34 tests):
+The project includes comprehensive unit and integration tests (38 tests):
 - **Unit tests** - Test individual functions in isolation
 - **Integration tests** - Test complete workflows
+- **Download tests** - Test actual package downloads from PyPI (disabled by default)
 - **Editable install tests** - Test -e and --editable support
 - **Fixtures** - Sample requirements files for testing
 

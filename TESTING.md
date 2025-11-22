@@ -2,9 +2,9 @@
 
 ## Test Suite Summary
 
-✅ **34 tests passing** - 100% success rate
+✅ **38 tests passing** - 100% success rate
 
-The rpip test suite includes comprehensive unit and integration tests covering all major functionality, including editable install support.
+The rpip test suite includes comprehensive unit, integration, and download tests covering all major functionality, including editable install support.
 
 ## Quick Start
 
@@ -22,6 +22,9 @@ python -m unittest discover -s tests -p "test_*.py" -v
 
 # Using pytest (recommended - install first)
 pytest -v
+
+# Run download tests (requires network access)
+pytest -m download
 
 # With coverage
 pytest --cov=. --cov-report=html --cov-report=term
@@ -90,6 +93,19 @@ Located in `tests/test_integration.py`:
 - ✅ Handles multiple packages sequentially
 - ✅ Tracks success/failure counts
 
+### Download Tests (1 test)
+
+Located in `tests/test_download.py`:
+
+These tests perform actual downloads of packages from PyPI and are disabled by default to keep the default test suite fast and network-independent.
+
+- ✅ Downloads a small package from PyPI
+
+To run these tests, use the `download` marker:
+```bash
+pytest -m download
+```
+
 ## Test Fixtures
 
 Located in `tests/fixtures/`:
@@ -111,6 +127,7 @@ The test suite covers:
 - ✅ Error handling and edge cases
 - ✅ Command-line argument parsing
 - ✅ Cleanup and file management
+- ✅ Actual package download
 
 ## Running Specific Tests
 
@@ -211,7 +228,7 @@ Tests use `tempfile` module which auto-cleans, but check `finally` blocks if iss
 ## Test Results Summary
 
 ```
-Ran 34 tests in 0.015s
+Ran 38 tests in 0.015s
 
 OK
 
@@ -221,10 +238,11 @@ Test Breakdown:
 │   ├── Requirements parsing: 7/7
 │   ├── Hash verification: 5/5
 │   └── Editable installs: 7/7
-└── Integration Tests: 11/11 passed
-    ├── Single package: 4/4
-    ├── Main function: 4/4
-    └── Requirements flow: 3/3
+├── Integration Tests: 11/11 passed
+│   ├── Single package: 4/4
+│   ├── Main function: 4/4
+│   └── Requirements flow: 3/3
+└── Download Tests: 1/1 passed
 ```
 
 ## Additional Resources
