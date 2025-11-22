@@ -1,0 +1,8 @@
+# Main requirements file
+flask==2.0.0
+
+# Include base requirements
+-r requirements.txt
+
+# Additional packages
+sqlalchemy>=1.4.0

@@ -1,0 +1,23 @@
+# Include documentation
+include README.md
+include LICENSE
+include CHANGELOG.md
+include TESTING.md
+
+# Include configuration files
+include setup.cfg
+include pyproject.toml
+include pytest.ini
+include .coveragerc
+include Makefile
+
+# Exclude unnecessary files
+exclude .gitignore
+exclude PUBLISHING.md
+recursive-exclude tests *
+recursive-exclude .github *
+recursive-exclude htmlcov *
+recursive-exclude __pycache__ *
+recursive-exclude *.pyc
+recursive-exclude *.pyo
+recursive-exclude *.whl
