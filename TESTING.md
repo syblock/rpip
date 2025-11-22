@@ -2,7 +2,7 @@
 
 ## Test Suite Summary
 
-✅ **38 tests passing** - 100% success rate
+✅ **40 tests passing** - 100% success rate
 
 The rpip test suite includes comprehensive unit, integration, and download tests covering all major functionality, including editable install support.
 
@@ -17,21 +17,11 @@ pip install -e ".[test]"
 ### Run Tests
 
 ```bash
-# Using unittest (no dependencies required)
-python -m unittest discover -s tests -p "test_*.py" -v
-
-# Using pytest (recommended - install first)
+# Using pytest (the required test runner for this project)
 pytest -v
 
 # Run download tests (requires network access)
 pytest -m download
-
-# With coverage
-pytest --cov=. --cov-report=html --cov-report=term
-
-# Using make
-make test
-make test-coverage
 ```
 
 ## Test Categories
@@ -93,13 +83,15 @@ Located in `tests/test_integration.py`:
 - ✅ Handles multiple packages sequentially
 - ✅ Tracks success/failure counts
 
-### Download Tests (1 test)
+### Download Tests (3 tests)
 
 Located in `tests/test_download.py`:
 
-These tests perform actual downloads of packages from PyPI and are disabled by default to keep the default test suite fast and network-independent.
+These tests perform actual downloads of packages from PyPI or simulate external downloader behavior and are disabled by default to keep the default test suite fast and network-independent.
 
-- ✅ Downloads a small package from PyPI
+- ✅ Downloads a small package from PyPI (Python downloader)
+- ✅ Downloads all packages from `requirements_local.txt` (Python downloader)
+- ✅ Verifies external downloaders (`aria2c`, `wget`, `curl`) generate log-friendly output in non-interactive mode
 
 To run these tests, use the `download` marker:
 ```bash
@@ -133,19 +125,20 @@ The test suite covers:
 
 ### By test file
 ```bash
-python -m unittest tests.test_main
-python -m unittest tests.test_integration
+pytest tests/test_main.py
+pytest tests/test_integration.py
+pytest tests/test_download.py
 ```
 
 ### By test class
 ```bash
-python -m unittest tests.test_main.TestCheckDownloader
-python -m unittest tests.test_main.TestParseRequirementsFile
+pytest tests/test_main.py::TestCheckDownloader
+pytest tests/test_main.py::TestParseRequirementsFile
 ```
 
 ### By specific test
 ```bash
-python -m unittest tests.test_main.TestCheckDownloader.test_finds_aria2c
+pytest tests/test_main.py::TestCheckDownloader::test_finds_aria2c
 ```
 
 ## Mocking Strategy

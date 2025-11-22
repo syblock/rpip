@@ -242,12 +242,12 @@ class TestRequirementsLocalFile(unittest.TestCase):
         installed_packages = [call[0][0] for call in calls]
 
         expected_packages = [
-            'numpy==1.22.3',
+            'numpy==1.24.4',
             'pandas==2.0.3',
-            'Pillow==9.0.0',
+            'Pillow==10.1.0',
             'opencv-python==4.9.0.80',
-            'tensorflow==2.11.0',
-            'keras==2.11.0'
+            'tensorflow==2.9.0',
+            'keras==2.9.0'
         ]
 
         for expected_pkg in expected_packages:

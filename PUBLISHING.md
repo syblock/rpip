@@ -101,13 +101,14 @@ rm -rf build/ dist/ *.egg-info/
 
 Ensure all tests pass:
 ```bash
-python -m unittest discover -s tests -p "test_*.py"
+pytest
 ```
 
 Expected output:
 ```
-Ran 34 tests in 0.015s
-OK
+============================= test session starts ==============================
+... (pytest output)
+====================== 38 passed, 1 deselected in X.XXs =======================
 ```
 
 ### Step 5: Build Distribution Packages
@@ -188,7 +189,7 @@ Create a GitHub release:
 
 ## Quick Release Checklist
 
-- [ ] All tests pass (`python -m unittest discover -s tests`)
+- [ ] All tests pass (`pytest`)
 - [ ] Version bumped in `setup.cfg`
 - [ ] CHANGELOG.md updated
 - [ ] Previous builds cleaned (`rm -rf dist/ build/ *.egg-info/`)
@@ -247,7 +248,7 @@ jobs:
         pip install build twine
 
     - name: Run tests
-      run: python -m unittest discover -s tests -p "test_*.py"
+      run: pytest
 
     - name: Build package
       run: python -m build

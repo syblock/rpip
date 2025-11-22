@@ -14,6 +14,7 @@ tests/
 │   ├── requirements.txt       # Sample requirements file
 │   ├── requirements-nested.txt # Requirements with nested -r
 │   └── requirements-with-options.txt # Requirements with pip options
+│   └── requirements_local.txt # Specific ML/CV packages for download testing
 └── README.md                  # This file
 ```
 
@@ -90,6 +91,7 @@ Tests the actual download of packages from PyPI:
 
 - These tests are disabled by default.
 - Run them with `pytest -m download`.
+- Includes tests for single package downloads, downloading multiple packages from `requirements_local.txt`, and verifying external downloader output in non-interactive mode.
 
 ## Test Fixtures
 

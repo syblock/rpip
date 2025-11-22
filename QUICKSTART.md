@@ -80,21 +80,12 @@ chmod 600 ~/.pypirc
 # 1. Update version in setup.cfg
 #    Change: version = 0.1.0 → 0.1.1
 
+```bash
 # 2. Run tests
-python -m unittest discover -s tests
+pytest
 
 # 3. Clean old builds
 rm -rf build/ dist/ *.egg-info/
-
-# 4. Build
-python -m build
-
-# 5. Upload
-twine upload dist/*
-
-# 6. Verify
-pipx install syblock-rpip --force
-rpip --help
 ```
 
 **Done!** Package is live at: https://pypi.org/project/syblock-rpip/
@@ -188,9 +179,9 @@ rpip/
 ├── MANIFEST.in        ✅ File inclusion rules
 ├── .gitignore         ✅ Git exclusions
 ├── rpip/
-│   ├── __init__.py    ✅ Version 0.1.0
+│   ├── __init__.py    ✅ Version 0.1.2
 │   └── main.py        ✅ Main code (438 lines)
-└── tests/             ✅ 34 tests passing
+└── tests/             ✅ 38 tests passing
 ```
 
 **Next step:** Get PyPI token and run `python -m build && twine upload dist/*`

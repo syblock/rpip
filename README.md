@@ -151,18 +151,11 @@ pytest
 
 # Run with coverage
 pytest --cov=. --cov-report=html
-
-# Run specific test file
-pytest tests/test_main.py
-
-# Using make (if available)
-make test
-make test-coverage
 ```
 
 ### Test Coverage
 
-The project includes comprehensive unit and integration tests (38 tests):
+The project includes comprehensive unit and integration tests (40 tests):
 - **Unit tests** - Test individual functions in isolation
 - **Integration tests** - Test complete workflows
 - **Download tests** - Test actual package downloads from PyPI (disabled by default)

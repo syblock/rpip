@@ -23,28 +23,28 @@ from rpip.main import (
 class TestCheckDownloader(unittest.TestCase):
     """Test the check_downloader function."""
 
-    @patch('rpip.main.shutil.which')
+    @patch('shutil.which')
     def test_finds_aria2c(self, mock_which):
         """Test that aria2c is selected when available."""
         mock_which.side_effect = lambda x: '/usr/bin/aria2c' if x == 'aria2c' else None
         result = check_downloader()
         self.assertEqual(result, 'aria2c')
 
-    @patch('rpip.main.shutil.which')
+    @patch('shutil.which')
     def test_finds_wget(self, mock_which):
         """Test that wget is selected when aria2c is not available."""
         mock_which.side_effect = lambda x: '/usr/bin/wget' if x == 'wget' else None
         result = check_downloader()
         self.assertEqual(result, 'wget')
 
-    @patch('rpip.main.shutil.which')
+    @patch('shutil.which')
     def test_finds_curl(self, mock_which):
         """Test that curl is selected when aria2c and wget are not available."""
         mock_which.side_effect = lambda x: '/usr/bin/curl' if x == 'curl' else None
         result = check_downloader()
         self.assertEqual(result, 'curl')
 
-    @patch('rpip.main.shutil.which')
+    @patch('shutil.which')
     def test_falls_back_to_python(self, mock_which):
         """Test that python is selected as fallback when no external tools are available."""
         mock_which.return_value = None
@@ -236,8 +236,8 @@ class TestVerifyFileHash(unittest.TestCase):
 class TestDownloadWithPython(unittest.TestCase):
     """Test the download_with_python function."""
 
-    @patch('rpip.main.urlopen')
-    @patch('rpip.main.os.path.exists')
+    @patch('urllib.request.urlopen')
+    @patch('os.path.exists')
     def test_fresh_download(self, mock_exists, mock_urlopen):
         """Test downloading a file from scratch."""
         mock_exists.return_value = False
@@ -285,7 +285,7 @@ class TestEditableInstalls(unittest.TestCase):
         self.assertFalse(is_editable_install('numpy>=1.20.0'))
         self.assertFalse(is_editable_install('pandas'))
 
-    @patch('rpip.main.subprocess.run')
+    @patch('subprocess.run')
     def test_install_editable_package_dash_e(self, mock_run):
         """Test installing editable package with -e flag."""
         mock_run.return_value = MagicMock(returncode=0)
@@ -298,7 +298,7 @@ class TestEditableInstalls(unittest.TestCase):
         self.assertIn('-e', args)
         self.assertIn('/path/to/package', args)
 
-    @patch('rpip.main.subprocess.run')
+    @patch('subprocess.run')
     def test_install_editable_package_double_dash(self, mock_run):
         """Test installing editable package with --editable flag."""
         mock_run.return_value = MagicMock(returncode=0)
@@ -311,7 +311,7 @@ class TestEditableInstalls(unittest.TestCase):
         self.assertIn('-e', args)
         self.assertIn('git+https://github.com/user/repo.git', args)
 
-    @patch('rpip.main.subprocess.run')
+    @patch('subprocess.run')
     def test_install_editable_package_with_extra_args(self, mock_run):
         """Test installing editable package with additional pip arguments."""
         mock_run.return_value = MagicMock(returncode=0)
@@ -324,7 +324,7 @@ class TestEditableInstalls(unittest.TestCase):
         self.assertIn('--user', args)
         self.assertIn('--no-deps', args)
 
-    @patch('rpip.main.subprocess.run')
+    @patch('subprocess.run')
     def test_install_editable_package_failure(self, mock_run):
         """Test handling of failed editable install."""
         mock_run.side_effect = subprocess.CalledProcessError(1, 'pip')

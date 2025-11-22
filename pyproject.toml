@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "syblock-rpip"
-version = "0.1.0"
+version = "0.1.2"
 description = "Resumable Package Installer - a wrapper around pip for robust downloads"
 readme = "README.md"
 requires-python = ">=3.7"

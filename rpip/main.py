@@ -74,15 +74,23 @@ def resolve_package(package_spec: str) -> Tuple[str, str, Optional[str]]:
 def download_with_python(url: str, filename: str):
     """Native Python downloader with resume support using urllib."""
 
+    is_interactive = sys.stdout.isatty()
+
     # Check if file exists and get its size for resume
     resume_pos = 0
     mode = 'wb'
     if os.path.exists(filename):
         resume_pos = os.path.getsize(filename)
         mode = 'ab'
-        print(f"   Resuming from byte {resume_pos}")
+        if is_interactive:
+            print(f"   Resuming from byte {resume_pos}")
+        else:
+            print(f"   Resuming download for {filename} from byte {resume_pos}...")
 
     try:
+        if not is_interactive:
+            print(f"   Downloading {filename}...")
+
         # Create request with Range header for resume support
         headers = {'User-Agent': 'rpip/1.0'}
         if resume_pos > 0:
@@ -99,7 +107,10 @@ def download_with_python(url: str, filename: str):
                     total_size = int(content_range.split('/')[-1])
                 else:
                     # Server doesn't support resume, start over
-                    print("   Server doesn't support resume, starting from beginning...")
+                    if is_interactive:
+                        print("   Server doesn't support resume, starting from beginning...")
+                    else:
+                        print(f"   Server doesn't support resume for {filename}, starting from beginning...")
                     resume_pos = 0
                     mode = 'wb'
                     total_size = int(response.headers.get('Content-Length', 0))
@@ -118,14 +129,17 @@ def download_with_python(url: str, filename: str):
                     f.write(chunk)
                     downloaded += len(chunk)
 
-                    # Show progress
-                    if total_size > 0:
+                    # Show progress only if interactive
+                    if is_interactive and total_size > 0:
                         percent = (downloaded / total_size) * 100
                         mb_downloaded = downloaded / (1024 * 1024)
                         mb_total = total_size / (1024 * 1024)
                         print(f"\r   Progress: {percent:.1f}% ({mb_downloaded:.1f}/{mb_total:.1f} MB)", end='', flush=True)
 
-            print()  # New line after progress
+            if is_interactive:
+                print()  # New line after progress
+            else:
+                print(f"   Download complete: {filename}")
 
     except HTTPError as e:
         if e.code == 416:  # Range Not Satisfiable - file already complete
@@ -149,28 +163,36 @@ def download_with_python(url: str, filename: str):
 def download_resumable(url: str, filename: str, downloader: str):
     """Executes the downloader (external tool or Python) with resume flags."""
 
+    is_interactive = sys.stdout.isatty()
+
     print(f"⬇️  Starting resumable download via {downloader}...")
-    print(f"   Target URL: {url}")
-    print(f"   Saving as: {filename}")
+    if is_interactive:
+        print(f"   Target URL: {url}")
+        print(f"   Saving as: {filename}")
 
     # Use native Python downloader
     if downloader == "python":
         download_with_python(url, filename)
         return
 
-    # Use external downloaders
+    # Base commands for external downloaders
     if downloader == "aria2c":
-        # -c for continue/resume, -o for output filename
         cmd = [downloader, "-c", url, "-o", filename]
+        if not is_interactive:
+            cmd.extend(["--summary-interval=0", "--quiet=true"])
     elif downloader == "wget":
-        # -c for continue/resume, -O for output filename
         cmd = [downloader, "-c", url, "-O", filename]
+        if not is_interactive:
+            cmd.append("-nv")  # Non-verbose
     else:  # curl
-        # -C - for auto-resume, -o for output filename, -L to follow redirects
         cmd = [downloader, "-C", "-", "-L", "-o", filename, url]
+        if not is_interactive:
+            cmd.extend(["-s", "-S"])  # Silent but show errors
 
     try:
         subprocess.run(cmd, check=True)
+        if not is_interactive:
+            print(f"   Download complete: {filename}")
     except subprocess.CalledProcessError as e:
         print(f"\n❌ Download failed with exit code {e.returncode}.", file=sys.stderr)
         print(f"   Run the same command again to RESUME the download.", file=sys.stderr)
