@@ -10,6 +10,13 @@ from urllib.request import Request, urlopen
 from urllib.error import HTTPError, URLError
 import hashlib
 
+# Force unbuffered output for Docker/CI environments
+# This ensures print statements appear immediately
+if hasattr(sys.stdout, 'reconfigure'):
+    sys.stdout.reconfigure(line_buffering=True)
+if hasattr(sys.stderr, 'reconfigure'):
+    sys.stderr.reconfigure(line_buffering=True)
+
 # --- Constants ---
 # Downloader Preference: external tools are faster, Python fallback is always available
 DOWNLOADER_PREFERENCE = ["aria2c", "wget", "curl", "python"]

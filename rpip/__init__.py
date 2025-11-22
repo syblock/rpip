@@ -4,7 +4,7 @@ A CLI tool that wraps pip to provide resumable downloads for Python packages.
 Especially useful for large packages on unreliable internet connections.
 """
 
-__version__ = "0.1.2"
+__version__ = "0.1.4"
 __author__ = "SyBlock"
 __email__ = "syblock.dev@gmail.com"
 

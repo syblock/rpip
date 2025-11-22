@@ -1,10 +1,10 @@
 [build-system]
-requires = ["setuptools>=45", "wheel", "setuptools_scm[toml]>=6.2"]
+requires = ["setuptools>=45", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
 name = "syblock-rpip"
-version = "0.1.2"
+dynamic = ["version"]
 description = "Resumable Package Installer - a wrapper around pip for robust downloads"
 readme = "README.md"
 requires-python = ">=3.7"
@@ -55,3 +55,6 @@ rpip = "rpip.main:main"
 
 [tool.setuptools]
 packages = ["rpip"]
+
+[tool.setuptools.dynamic]
+version = {attr = "rpip.__version__"}
