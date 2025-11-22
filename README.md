@@ -1,6 +1,6 @@
-# rpip
+# Resumable PIP
 
-**R**esumable **P**ackage **I**nstaller: A Command-Line Interface (CLI) tool that wraps `pip` to provide **resumable downloads** for Python packages, especially useful for large packages (like PyTorch or TensorFlow) on flaky internet connections.
+A Command-Line Interface (CLI) tool that wraps `pip` to provide **resumable downloads** for Python packages, especially useful for large packages (like PyTorch or TensorFlow) on flaky internet connections.
 
 ## Features
 
